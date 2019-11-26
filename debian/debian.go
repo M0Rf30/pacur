@@ -142,7 +142,7 @@ func (d *Debian) createDebconfTemplate() (err error) {
 	template := filepath.Join(d.Pack.Home, d.Pack.DebconfTemplate)
 	path := filepath.Join(d.debDir, "templates")
 
-	err = utils.CopyFile("", template, path, true)
+	err = utils.CopyFile("", template, path, false)
 	if err != nil {
 		return
 	}
@@ -154,7 +154,7 @@ func (d *Debian) createDebconfConfig() (err error) {
 	config := filepath.Join(d.Pack.Home, d.Pack.DebconfConfig)
 	path := filepath.Join(d.debDir, "config")
 
-	err = utils.CopyFile("", config, path, true)
+	err = utils.CopyFile("", config, path, false)
 	if err != nil {
 		return
 	}
