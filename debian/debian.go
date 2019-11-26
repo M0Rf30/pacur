@@ -139,9 +139,10 @@ func (d *Debian) createMd5Sums() (err error) {
 }
 
 func (d *Debian) createDebconfTemplate() (err error) {
+	template := filepath.Join(d.Pack.Home, d.Pack.DebconfTemplate)
 	path := filepath.Join(d.debDir, d.Pack.DebconfTemplate)
 
-	err = utils.CreateWrite(path, d.Pack.DebconfTemplate)
+	err = utils.CopyFile("", d.Pack.Home, path, true)
 	if err != nil {
 		return
 	}
@@ -150,9 +151,10 @@ func (d *Debian) createDebconfTemplate() (err error) {
 }
 
 func (d *Debian) createDebconfConfig() (err error) {
+	template := filepath.Join(d.Pack.Home, d.Pack.DebconfConfig)
 	path := filepath.Join(d.debDir, d.Pack.DebconfConfig)
 
-	err = utils.CreateWrite(path, d.Pack.DebconfConfig)
+	err = utils.CopyFile("", d.Pack.Home, path, true)
 	if err != nil {
 		return
 	}
