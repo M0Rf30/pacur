@@ -10,6 +10,7 @@ import (
 	"github.com/m0rf30/pacur/debian"
 	"github.com/m0rf30/pacur/pacman"
 	"github.com/m0rf30/pacur/redhat"
+	"github.com/m0rf30/pacur/suse"
 	"github.com/m0rf30/pacur/utils"
 )
 
@@ -106,6 +107,16 @@ func (p *Project) getProject(target, path string) (
 		}
 	case "redhat":
 		proj = &redhat.RedhatProject{
+			Name:       p.Name,
+			Root:       p.Root,
+			MirrorRoot: p.MirrorRoot,
+			BuildRoot:  p.BuildRoot,
+			Path:       path,
+			Distro:     distro,
+			Release:    release,
+		}
+	case "suse":
+		proj = &suse.SuseProject{
 			Name:       p.Name,
 			Root:       p.Root,
 			MirrorRoot: p.MirrorRoot,

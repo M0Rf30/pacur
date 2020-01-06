@@ -6,6 +6,7 @@ import (
 	"github.com/m0rf30/pacur/pack"
 	"github.com/m0rf30/pacur/pacman"
 	"github.com/m0rf30/pacur/redhat"
+	"github.com/m0rf30/pacur/suse"
 )
 
 type Packer interface {
@@ -27,6 +28,10 @@ func GetPacker(pac *pack.Pack, distro, release string) (
 		}
 	case "redhat":
 		pcker = &redhat.Redhat{
+			Pack: pac,
+		}
+	case "suse":
+		pcker = &suse.Suse{
 			Pack: pac,
 		}
 	default:
