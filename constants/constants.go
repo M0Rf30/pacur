@@ -1,8 +1,9 @@
 package constants
 
 import (
-	"github.com/dropbox/godropbox/container/set"
 	"strings"
+
+	"github.com/dropbox/godropbox/container/set"
 )
 
 const (
@@ -20,6 +21,7 @@ var (
 		"debian-jessie",
 		"debian-stretch",
 		"debian-buster",
+		"opensuse",
 		"oraclelinux-7",
 		"ubuntu-trusty",
 		"ubuntu-xenial",
@@ -37,6 +39,7 @@ var (
 		"debian-jessie":  ".jessie_",
 		"debian-stretch": ".stretch_",
 		"debian-buster":  ".buster_",
+		"opensuse":       ".opensuse_",
 		"oraclelinux-7":  ".el7.oraclelinux.",
 		"ubuntu-trusty":  ".trusty_",
 		"ubuntu-xenial":  ".xenial_",
@@ -50,6 +53,7 @@ var (
 		"fedora":      "redhat",
 		"centos":      "redhat",
 		"debian":      "debian",
+		"opensuse":    "suse",
 		"oraclelinux": "redhat",
 		"ubuntu":      "debian",
 	}
@@ -57,6 +61,7 @@ var (
 		"apt",
 		"pacman",
 		"yum",
+		"zypper",
 	}
 
 	ReleasesSet    = set.NewSet()
@@ -84,6 +89,8 @@ func init() {
 			packager = "pacman"
 		case "redhat":
 			packager = "yum"
+		case "suse":
+			packager = "zypper"
 		default:
 			panic("Failed to find packager for distro")
 		}
