@@ -55,7 +55,8 @@ func (s *Suse) getDepends() (err error) {
 
 	args := []string{
 		"-n",
-		"install -y",
+		"install",
+		"-y",
 	}
 	args = append(args, s.Pack.MakeDepends...)
 
