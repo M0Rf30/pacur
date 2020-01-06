@@ -10,7 +10,6 @@
 ![Docker Repository](https://img.shields.io/badge/docker-centos--7-10233f.svg?style=flat "Docker Repository")
 
 
-![Docker Repository](https://img.shields.io/badge/docker-debian--jessie-d70a53.svg?style=flat "Docker Repository")
 ![Docker Repository](https://img.shields.io/badge/docker-debian--stretch-d70a53.svg?style=flat "Docker Repository")
 ![Docker Repository](https://img.shields.io/badge/docker-debian--buster-d70a53.svg?style=flat "Docker Repository")
 
@@ -124,16 +123,14 @@ key:ubuntu="this will apply only to ubuntu builds"
 | `amazonlinux-1` | Amazonlinux 1 |
 | `amazonlinux-2` | Amazonlinux 2 |
 | `centos-7` | Centos 7 |
-| `debian-jessie` | Debian jessie |
 | `debian-stretch` | Debian stretch |
 | `debian-buster` | Debian buster |
-| `fedora-29` | Fedora 29 |
 | `fedora-30` | Fedora 30 |
+| `fedora-31` | Fedora 31 |
+| `opensuse` | OpenSuse Tumbleweed |
 | `oraclelinux-7` | Oraclelinux 7 |
-| `ubuntu-trusty` | Ubuntu trusty |
 | `ubuntu-xenial` | Ubuntu xenial |
 | `ubuntu-bionic` | Ubuntu bionic |
-| `ubuntu-disco` | Ubuntu disco |
 | `ubuntu-eoan` | Ubuntu eoan |
 
 ### directives
@@ -143,6 +140,7 @@ key:ubuntu="this will apply only to ubuntu builds"
 | `apt` | All deb packages |
 | `pacman` | All pkg packages |
 | `yum` | All rpm packages |
+| `zypper` | All rpm packages for Suse |
 | `archlinux` | All archlinux releases |
 | `amazonlinux` | All amazonlinux releases |
 | `centos` | All centos releases |
@@ -153,16 +151,13 @@ key:ubuntu="this will apply only to ubuntu builds"
 | `amazonlinux-1` | Amazonlinux 1 |
 | `amazonlinux-2` | Amazonlinux 2 |
 | `centos-7` | Centos 7 |
-| `debian-jessie` | Debian jessie |
 | `debian-stretch` | Debian stretch |
 | `debian-buster` | Debian buster |
-| `fedora-29` | Fedora 29 |
 | `fedora-30` | Fedora 30 |
+| `fedora-31` | Fedora 31 |
 | `oraclelinux-7` | Oraclelinux 7 |
-| `ubuntu-trusty` | Ubuntu trusty |
 | `ubuntu-xenial` | Ubuntu xenial |
 | `ubuntu-bionic` | Ubuntu bionic |
-| `ubuntu-disco` | Ubuntu disco |
 | `ubuntu-eoan` | Ubuntu eoan |
 
 Directives are used to specify variables that only apply to a limited set of
