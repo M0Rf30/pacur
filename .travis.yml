@@ -7,7 +7,7 @@ before_install:
 - bash ./build.sh
 deploy:
   provider: script
-  script: bash docker/push.sh
+  script: bash ./push.sh
   on:
     branch: master
 env:
