@@ -39,10 +39,8 @@ var (
 		"debian-buster":  ".buster_",
 		"opensuse":       ".opensuse_",
 		"oraclelinux-7":  ".el7.oraclelinux.",
-		"ubuntu-trusty":  ".trusty_",
 		"ubuntu-xenial":  ".xenial_",
 		"ubuntu-bionic":  ".bionic_",
-		"ubuntu-disco":   ".disco_",
 		"ubuntu-eoan":    ".eoan_",
 	}
 	DistroPack = map[string]string{
