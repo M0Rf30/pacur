@@ -12,24 +12,26 @@ const (
 
 var (
 	Releases = [...]string{
-		"archlinux",
 		"amazonlinux-1",
 		"amazonlinux-2",
+		"archlinux",
+		"astralinux",
 		"fedora-30",
 		"fedora-31",
 		"centos-7",
-		"debian-stretch",
 		"debian-buster",
+		"debian-stretch",
 		"opensuse",
 		"oraclelinux-7",
-		"ubuntu-xenial",
 		"ubuntu-bionic",
 		"ubuntu-eoan",
+		"ubuntu-xenial",
 	}
 	ReleasesMatch = map[string]string{
-		"archlinux":      "",
 		"amazonlinux-1":  ".amzn1.",
 		"amazonlinux-2":  ".amzn2.",
+		"archlinux":      "",
+		"astralinux":     ".astra2_",
 		"fedora-30":      ".fc30.",
 		"fedora-31":      ".fc31.",
 		"centos-7":       ".el7.centos.",
@@ -37,13 +39,14 @@ var (
 		"debian-buster":  ".buster_",
 		"opensuse":       ".opensuse_",
 		"oraclelinux-7":  ".el7.oraclelinux.",
-		"ubuntu-xenial":  ".xenial_",
 		"ubuntu-bionic":  ".bionic_",
 		"ubuntu-eoan":    ".eoan_",
+		"ubuntu-xenial":  ".xenial_",
 	}
 	DistroPack = map[string]string{
-		"archlinux":   "pacman",
 		"amazonlinux": "redhat",
+		"archlinux":   "pacman",
+		"astralinux":  "debian",
 		"fedora":      "redhat",
 		"centos":      "redhat",
 		"debian":      "debian",
