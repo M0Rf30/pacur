@@ -2,12 +2,12 @@ package parse
 
 import (
 	"bufio"
+	"github.com/dropbox/godropbox/errors"
+	"github.com/m0rf30/pacur/pack"
+	"github.com/m0rf30/pacur/utils"
 	"path/filepath"
 	"regexp"
 	"strings"
-
-	"github.com/m0rf30/pacur/pack"
-	"github.com/m0rf30/pacur/utils"
 )
 
 const (
@@ -23,7 +23,10 @@ var (
 func File(distro, release, home string) (pac *pack.Pack, err error) {
 	home, err = filepath.Abs(home)
 	if err != nil {
-		return
+		err = &FileError{
+			errors.Wrapf(err, "parse: Failed to get root directory from '%s'",
+				home),
+		}
 	}
 
 	err = utils.ExistsMakeDir(root)
@@ -63,7 +66,7 @@ func File(distro, release, home string) (pac *pack.Pack, err error) {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		n++
+		n += 1
 
 		if line == "" || line[:1] == "#" {
 			continue
@@ -106,6 +109,10 @@ func File(distro, release, home string) (pac *pack.Pack, err error) {
 			} else {
 				parts := strings.SplitN(line, "=", 2)
 				if len(parts) != 2 {
+					err = &SyntaxError{
+						errors.Newf("parse: Line missing '=' (%d: %s)",
+							n, line),
+					}
 					return
 				}
 
@@ -113,8 +120,17 @@ func File(distro, release, home string) (pac *pack.Pack, err error) {
 				val := parts[1]
 
 				if key[:1] == " " {
+					err = &SyntaxError{
+						errors.Newf("parse: Extra space padding (%d: %s)",
+							n, line),
+					}
 					return
 				} else if key[len(key)-1:] == " " {
+					err = &SyntaxError{
+						errors.Newf(
+							"parse: Extra space before '=' (%d: %s)",
+							n, line),
+					}
 					return
 				}
 
@@ -122,6 +138,11 @@ func File(distro, release, home string) (pac *pack.Pack, err error) {
 				switch val[:1] {
 				case `"`, "`":
 					if val[valLen-1:] != val[:1] {
+						err = &SyntaxError{
+							errors.Newf("parse: Unexpected char '%s' "+
+								"expected '%s' (%d: %s)",
+								val[valLen-1:], val[:1], n, line),
+						}
 						return
 					}
 
@@ -132,10 +153,21 @@ func File(distro, release, home string) (pac *pack.Pack, err error) {
 				case "(":
 					if val[valLen-1:] == ")" {
 						if val[1:2] != `"` && val[1:2] != "`" {
+							err = &SyntaxError{
+								errors.Newf("parse: Unexpected char '%s' "+
+									"expected '\"' or '`' (%d: %s)",
+									val[1:2], n, line),
+							}
 							return
 						}
 
 						if val[valLen-2:valLen-1] != val[1:2] {
+							err = &SyntaxError{
+								errors.Newf("parse: Unexpected char '%s' "+
+									"expected '%s' (%d: %s)",
+									val[valLen-2:valLen-1], val[1:2],
+									n, line),
+							}
 							return
 						}
 
@@ -149,8 +181,18 @@ func File(distro, release, home string) (pac *pack.Pack, err error) {
 						blockKey = key
 					}
 				case " ":
+					err = &SyntaxError{
+						errors.Newf(
+							"parse: Extra space after '=' (%d: %s)",
+							n, line),
+					}
 					return
 				default:
+					err = &SyntaxError{
+						errors.Newf(
+							"parse: Unexpected char '%s' expected "+
+							"'\"' or '`' (%d: %s)", val[:1], n, line),
+					}
 					return
 				}
 			}

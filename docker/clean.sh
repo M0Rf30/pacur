@@ -71,7 +71,7 @@ sudo docker rmi fedora:29
 sudo docker rmi fedora:30
 sudo docker rmi fedora:31
 sudo docker rmi fedora:32
-sudo docker rmi opensuse:tumbleweed
+sudo docker rmi opensuse:tubleweed
 sudo docker rmi oraclelinux:7
 sudo docker rmi oraclelinux:8
 sudo docker rmi ubuntu:precise

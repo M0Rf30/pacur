@@ -2,13 +2,13 @@ package debian
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
-	"strings"
-
+	"github.com/dropbox/godropbox/errors"
 	"github.com/m0rf30/pacur/constants"
 	"github.com/m0rf30/pacur/pack"
 	"github.com/m0rf30/pacur/utils"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 type Debian struct {
@@ -212,6 +212,10 @@ func (d *Debian) clean() (err error) {
 
 	match, ok := constants.ReleasesMatch[d.Pack.FullRelease]
 	if !ok {
+		err = &BuildError{
+			errors.Newf("debian: Failed to find match for '%s'",
+				d.Pack.FullRelease),
+		}
 		return
 	}
 

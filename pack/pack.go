@@ -1,50 +1,50 @@
 package pack
 
 import (
-	"strings"
-
+	"github.com/dropbox/godropbox/errors"
 	"github.com/m0rf30/pacur/constants"
 	"github.com/m0rf30/pacur/resolver"
+	"strings"
 )
 
 type Pack struct {
-	priorities      map[string]int
-	Targets         []string
-	Distro          string
-	Release         string
-	FullRelease     string
-	Root            string
-	Home            string
-	SourceDir       string
-	PackageDir      string
-	PkgName         string
-	PkgVer          string
-	PkgRel          string
-	PkgDesc         string
-	PkgDescLong     []string
-	Maintainer      string
-	Arch            string
-	License         []string
-	Section         string
-	Priority        string
-	Url             string
-	Depends         []string
-	OptDepends      []string
-	MakeDepends     []string
-	Provides        []string
-	Conflicts       []string
-	Sources         []string
+	priorities  map[string]int
+	Targets     []string
+	Distro      string
+	Release     string
+	FullRelease string
+	Root        string
+	Home        string
+	SourceDir   string
+	PackageDir  string
+	PkgName     string
+	PkgVer      string
+	PkgRel      string
+	PkgDesc     string
+	PkgDescLong []string
+	Maintainer  string
+	Arch        string
+	License     []string
+	Section     string
+	Priority    string
+	Url         string
+	Depends     []string
 	DebconfTemplate string
 	DebconfConfig   string
-	HashSums        []string
-	Backup          []string
-	Build           []string
-	Package         []string
-	PreInst         []string
-	PostInst        []string
-	PreRm           []string
-	PostRm          []string
-	Variables       map[string]string
+	OptDepends  []string
+	MakeDepends []string
+	Provides    []string
+	Conflicts   []string
+	Sources     []string
+	HashSums    []string
+	Backup      []string
+	Build       []string
+	Package     []string
+	PreInst     []string
+	PostInst    []string
+	PreRm       []string
+	PostRm      []string
+	Variables   map[string]string
 }
 
 func (p *Pack) Init() {
@@ -64,6 +64,9 @@ func (p *Pack) parseDirective(input string) (key string, pry int, err error) {
 		pry = 0
 		return
 	} else if len(split) != 2 {
+		err = &ParseError{
+			errors.Newf("pack: Invalid use of ':' directive in '%s'", input),
+		}
 		return
 	} else {
 		pry = -1
@@ -74,6 +77,9 @@ func (p *Pack) parseDirective(input string) (key string, pry int, err error) {
 	}
 
 	if key == "pkgver" || key == "pkgrel" {
+		err = &ParseError{
+			errors.Newf("pack: Cannot use directive for '%s'", key),
+		}
 		return
 	}
 
@@ -98,6 +104,10 @@ func (p *Pack) parseDirective(input string) (key string, pry int, err error) {
 			pry = 1
 		}
 		return
+	}
+
+	err = &ParseError{
+		errors.Newf("pack: Unknown directive '%s'", dirc),
 	}
 	return
 }
@@ -238,8 +248,14 @@ func (p *Pack) AddItem(key string, data interface{}, n int, line string) (
 func (p *Pack) Validate() (err error) {
 	if len(p.Sources) == len(p.HashSums) {
 	} else if len(p.Sources) > len(p.HashSums) {
+		err = &ValidationError{
+			errors.New("pack: Missing hash sum for source"),
+		}
 		return
 	} else {
+		err = &ValidationError{
+			errors.New("pack: Too many hash sums for sources"),
+		}
 		return
 	}
 

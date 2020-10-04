@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"github.com/dropbox/godropbox/errors"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -12,6 +13,9 @@ import (
 func ReadFile(path string) (data []byte, err error) {
 	data, err = ioutil.ReadFile(path)
 	if err != nil {
+		err = &ReadError{
+			errors.Wrapf(err, "utils: Failed to read file '%s'", path),
+		}
 		return
 	}
 
@@ -21,6 +25,9 @@ func ReadFile(path string) (data []byte, err error) {
 func ReadDir(path string) (items []os.FileInfo, err error) {
 	items, err = ioutil.ReadDir(path)
 	if err != nil {
+		err = &ReadError{
+			errors.Wrapf(err, "utils: Failed to read dir '%s'", path),
+		}
 		return
 	}
 
@@ -30,6 +37,9 @@ func ReadDir(path string) (items []os.FileInfo, err error) {
 func MkdirAll(path string) (err error) {
 	err = os.MkdirAll(path, 0755)
 	if err != nil {
+		err = &WriteError{
+			errors.Wrapf(err, "utils: Failed to mkdir '%s'", path),
+		}
 		return
 	}
 
@@ -39,6 +49,9 @@ func MkdirAll(path string) (err error) {
 func Chmod(path string, perm os.FileMode) (err error) {
 	err = os.Chmod(path, perm)
 	if err != nil {
+		err = &WriteError{
+			errors.Wrapf(err, "utils: Failed to chmod '%s'", path),
+		}
 		return
 	}
 
@@ -62,6 +75,9 @@ func ChownR(path string, user, group string) (err error) {
 func Remove(path string) (err error) {
 	err = os.Remove(path)
 	if err != nil {
+		err = &WriteError{
+			errors.Wrapf(err, "utils: Failed to remove '%s'", path),
+		}
 		return
 	}
 
@@ -71,6 +87,9 @@ func Remove(path string) (err error) {
 func RemoveAll(path string) (err error) {
 	err = os.RemoveAll(path)
 	if err != nil {
+		err = &WriteError{
+			errors.Wrapf(err, "utils: Failed to remove '%s'", path),
+		}
 		return
 	}
 
@@ -85,6 +104,10 @@ func ExistsMakeDir(path string) (err error) {
 			if err != nil {
 				return
 			}
+		} else {
+			err = &WriteError{
+				errors.Wrapf(err, "utils: Failed to stat '%s'", path),
+			}
 		}
 		return
 	}
@@ -95,6 +118,9 @@ func ExistsMakeDir(path string) (err error) {
 func Create(path string) (file *os.File, err error) {
 	file, err = os.Create(path)
 	if err != nil {
+		err = &WriteError{
+			errors.Wrapf(err, "utils: Failed to create '%s'", path),
+		}
 		return
 	}
 
@@ -110,6 +136,9 @@ func CreateWrite(path string, data string) (err error) {
 
 	_, err = file.WriteString(data)
 	if err != nil {
+		err = &WriteError{
+			errors.Wrapf(err, "utils: Failed to write to file '%s'", path),
+		}
 		return
 	}
 
@@ -119,6 +148,9 @@ func CreateWrite(path string, data string) (err error) {
 func Open(path string) (file *os.File, err error) {
 	file, err = os.Open(path)
 	if err != nil {
+		err = &ReadError{
+			errors.Wrapf(err, "utils: Failed to open file '%s'", path),
+		}
 		return
 	}
 
@@ -169,6 +201,9 @@ func CopyFile(dir, source, dest string, presv bool) (err error) {
 func CopyFiles(source, dest string, presv bool) (err error) {
 	files, err := ioutil.ReadDir(source)
 	if err != nil {
+		err = &ReadError{
+			errors.Wrapf(err, "utils: Failed to read dir '%s'", source),
+		}
 		return
 	}
 
@@ -189,6 +224,9 @@ func CopyFiles(source, dest string, presv bool) (err error) {
 func FindExt(path, ext string) (matches []string, err error) {
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
+		err = &ReadError{
+			errors.Wrapf(err, "utils: Failed to read dir '%s'", path),
+		}
 		return
 	}
 
@@ -208,6 +246,9 @@ func FindExt(path, ext string) (matches []string, err error) {
 func FindMatch(path, match string) (matches []string, err error) {
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
+		err = &ReadError{
+			errors.Wrapf(err, "utils: Failed to read dir '%s'", path),
+		}
 		return
 	}
 
@@ -243,6 +284,9 @@ func GetDirSize(path string) (size int, err error) {
 
 	size, err = strconv.Atoi(split[len(split)-2])
 	if err != nil {
+		err = &ReadError{
+			errors.Wrapf(err, "utils: Failed to get dir size '%s'", path),
+		}
 		return
 	}
 
@@ -254,6 +298,10 @@ func Exists(path string) (exists bool, err error) {
 	if err != nil {
 		if os.IsNotExist(err) {
 			err = nil
+		} else {
+			err = &ExistsError{
+				errors.Wrapf(err, "utils: Exists check error for '%s'", path),
+			}
 		}
 	} else {
 		exists = true

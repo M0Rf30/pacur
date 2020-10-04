@@ -2,11 +2,11 @@ package mirror
 
 import (
 	"fmt"
-	"path/filepath"
-
+	"github.com/dropbox/godropbox/errors"
 	"github.com/m0rf30/pacur/constants"
 	"github.com/m0rf30/pacur/signing"
 	"github.com/m0rf30/pacur/utils"
+	"path/filepath"
 )
 
 type Mirror struct {
@@ -90,6 +90,10 @@ func (m *Mirror) createDebian() (err error) {
 
 	match, ok := constants.ReleasesMatch[m.Distro+"-"+m.Release]
 	if !ok {
+		err = &BuildError{
+			errors.Newf("mirror: Failed to find match for '%s'",
+				m.Distro+"-"+m.Release),
+		}
 		return
 	}
 
@@ -119,6 +123,10 @@ func (m *Mirror) createRedhat() (err error) {
 
 	match, ok := constants.ReleasesMatch[m.Distro+"-"+m.Release]
 	if !ok {
+		err = &BuildError{
+			errors.Newf("mirror: Failed to find match for '%s'",
+				m.Distro+"-"+m.Release),
+		}
 		return
 	}
 
@@ -170,6 +178,9 @@ func (m *Mirror) Create() (err error) {
 	case "redhat":
 		err = m.createRedhat()
 	default:
+		err = &UnknownType{
+			errors.Newf("mirror: Unknown type '%s'", m.Distro),
+		}
 	}
 
 	return

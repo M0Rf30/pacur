@@ -20,7 +20,7 @@ RUN rm -f go1.15.linux-amd64.tar.gz
 ENV GOPATH /go
 ENV PATH /usr/local/go/bin:$PATH:/go/bin
 
-RUN go get github.com/pacur/pacur
+RUN go get github.com/m0rf30/pacur
 
 ENTRYPOINT ["pacur"]
 CMD ["build", "oraclelinux-8"]

@@ -3,6 +3,7 @@ package resolver
 import (
 	"container/list"
 	"fmt"
+	"github.com/dropbox/godropbox/errors"
 	"regexp"
 	"strings"
 )
@@ -56,6 +57,10 @@ func (r *Resolver) resolve(item *element) (err error) {
 
 		val, ok := r.data[key]
 		if !ok {
+			err = &ResolveError{
+				errors.Newf(`resolver: Failed to resolve '%s' in '%s="%s"'`,
+					keyFull, item.Key, *item.Val),
+			}
 			return
 		}
 

@@ -1,7 +1,9 @@
 #!/bin/bash
 set -e
+cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-for dockerfile in $(ls Dockerfile.*) ; do
-    docker build -f $dockerfile \
-    --rm -t m0rf30/pacur-${dockerfile#Dockerfile.}:$TRAVIS_TAG .
+for dir in */ ; do
+    cd $dir
+    sudo docker build --rm -t m0rf30/pacur-${dir::-1} .
+    cd ..
 done

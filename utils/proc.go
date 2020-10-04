@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"github.com/dropbox/godropbox/errors"
 	"io"
 	"os"
 	"os/exec"
@@ -17,6 +18,9 @@ func Exec(dir, name string, arg ...string) (err error) {
 
 	err = cmd.Run()
 	if err != nil {
+		err = &ExecError{
+			errors.Wrapf(err, "utils: Failed to exec '%s'", name),
+		}
 		return
 	}
 
@@ -30,6 +34,9 @@ func ExecInput(dir, input, name string, arg ...string) (err error) {
 
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
+		err = &ExecError{
+			errors.Wrapf(err, "utils: Failed to get stdin in exec '%s'", name),
+		}
 		return
 	}
 	defer stdin.Close()
@@ -40,16 +47,26 @@ func ExecInput(dir, input, name string, arg ...string) (err error) {
 
 	err = cmd.Start()
 	if err != nil {
+		err = &ExecError{
+			errors.Wrapf(err, "utils: Failed to exec '%s'", name),
+		}
 		return
 	}
 
 	_, err = io.WriteString(stdin, input)
 	if err != nil {
+		err = &ExecError{
+			errors.Wrapf(err, "utils: Failed to write stdin in exec '%s'",
+				name),
+		}
 		return
 	}
 
 	err = cmd.Wait()
 	if err != nil {
+		err = &ExecError{
+			errors.Wrapf(err, "utils: Failed to exec '%s'", name),
+		}
 		return
 	}
 
@@ -66,6 +83,9 @@ func ExecOutput(dir, name string, arg ...string) (output string, err error) {
 
 	outputByt, err := cmd.Output()
 	if err != nil {
+		err = &ExecError{
+			errors.Wrapf(err, "utils: Failed to exec '%s'", name),
+		}
 		return
 	}
 	output = string(outputByt)
