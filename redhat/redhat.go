@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/dropbox/godropbox/container/set"
+	"github.com/dropbox/godropbox/errors"
 	"github.com/m0rf30/pacur/constants"
 	"github.com/m0rf30/pacur/pack"
 	"github.com/m0rf30/pacur/utils"
@@ -27,20 +28,35 @@ type Redhat struct {
 func (r *Redhat) getRpmPath() (path string, err error) {
 	archs, err := ioutil.ReadDir(r.rpmsDir)
 	if err != nil {
+		err = &BuildError{
+			errors.Wrapf(err, "redhat: Failed to find rpms arch from '%s'",
+				r.rpmsDir),
+		}
 		return
 	}
 
 	if len(archs) < 1 {
+		err = &BuildError{
+			errors.Newf("redhat: Failed to find rpm arch from '%s'",
+				r.rpmsDir),
+		}
 		return
 	}
 	archPath := filepath.Join(r.rpmsDir, archs[0].Name())
 
 	rpms, err := ioutil.ReadDir(archPath)
 	if err != nil {
+		err = &BuildError{
+			errors.Wrapf(err, "redhat: Failed to find rpms from '%s'",
+				r.rpmsDir),
+		}
 		return
 	}
 
 	if len(rpms) < 1 {
+		err = &BuildError{
+			errors.Newf("redhat: Failed to find rpm from '%s'"),
+		}
 		return
 	}
 	path = filepath.Join(archPath, rpms[0].Name())
@@ -122,8 +138,12 @@ func (r *Redhat) createSpec(files []string) (err error) {
 		release = ".amzn2"
 	} else if r.Pack.Distro == "centos" && r.Pack.Release == "7" {
 		release = ".el7.centos"
+	} else if r.Pack.Distro == "centos" && r.Pack.Release == "8" {
+		release = ".el8.centos"
 	} else if r.Pack.Distro == "oraclelinux" && r.Pack.Release == "7" {
 		release = ".el7.oraclelinux"
+	} else if r.Pack.Distro == "oraclelinux" && r.Pack.Release == "8" {
+		release = ".el8.oraclelinux"
 	}
 
 	data := ""
@@ -152,6 +172,8 @@ func (r *Redhat) createSpec(files []string) (err error) {
 		data += fmt.Sprintf("BuildRequires: %s\n", pkg)
 	}
 
+	data += "\n"
+	data += "%global _build_id_links none\n"
 	data += "\n"
 
 	if len(r.Pack.PkgDescLong) > 0 {
@@ -274,6 +296,10 @@ func (r *Redhat) clean() (err error) {
 
 	match, ok := constants.ReleasesMatch[r.Pack.FullRelease]
 	if !ok {
+		err = &BuildError{
+			errors.Newf("redhat: Failed to find match for '%s'",
+				r.Pack.FullRelease),
+		}
 		return
 	}
 
@@ -289,6 +315,10 @@ func (r *Redhat) clean() (err error) {
 func (r *Redhat) copy() (err error) {
 	archs, err := ioutil.ReadDir(r.rpmsDir)
 	if err != nil {
+		err = &BuildError{
+			errors.Wrapf(err, "redhat: Failed to find rpms from '%s'",
+				r.rpmsDir),
+		}
 		return
 	}
 
@@ -330,6 +360,10 @@ func (r *Redhat) Build() (err error) {
 	}
 
 	if len(files) == 0 {
+		err = &BuildError{
+			errors.Newf("redhat: Failed to find rpms files '%s'",
+				r.rpmsDir),
+		}
 		return
 	}
 
