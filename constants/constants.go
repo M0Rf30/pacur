@@ -22,7 +22,7 @@ var (
 		"debian-jessie",
 		"debian-stretch",
 		"debian-buster",
-		"opensuse-tubleweed",
+		"opensuse-tumbleweed",
 		"oraclelinux-7",
 		"oraclelinux-8",
 		"ubuntu-trusty",
