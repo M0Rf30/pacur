@@ -4,6 +4,6 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 for dir in */ ; do
     cd $dir
-    sudo docker build --rm -t m0rf30/pacur-${dir::-1} .
+    sudo docker build --rm -t m0rf30/pacur-${dir::-1}:${TRAVIS_TAG} .
     cd ..
 done

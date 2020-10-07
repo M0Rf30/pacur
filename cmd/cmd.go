@@ -17,7 +17,7 @@ func Parse() (err error) {
 	app := cli.NewApp()
 	app.Name = "pacur"
 	app.Usage = "Automated deb, rpm and pkgbuild build system"
-	app.Version = "0.5"
+	app.Version = "0.6"
 
 	app.Commands = []*cli.Command{
 		{

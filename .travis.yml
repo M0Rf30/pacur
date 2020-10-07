@@ -1,5 +1,5 @@
 os: linux
-dist: bionic
+dist: focal
 language: shell
 services:
 - docker
@@ -10,5 +10,5 @@ deploy:
   provider: script
   script: bash ./push.sh
   on:
-    branch: master
+    branch: desktop
     tags: true
