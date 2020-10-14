@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/m0rf30/pacur/utils"
+	"github.com/M0Rf30/pacur/utils"
 	"github.com/urfave/cli"
 )
 

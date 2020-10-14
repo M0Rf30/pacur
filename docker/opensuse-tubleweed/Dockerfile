@@ -8,7 +8,7 @@ RUN zypper update \
 ENV GOPATH /go
 ENV PATH /usr/local/go/bin:$PATH:/go/bin
 
-RUN go get github.com/m0rf30/pacur
+RUN go get github.com/M0Rf30/pacur
 
 ENTRYPOINT ["pacur"]
 CMD ["build", "opensuse"]

@@ -54,7 +54,7 @@ assist with this. Always run the `clean.sh` script to clear any existing pacur
 images. Building the images can take several hours.
 
 ```
-cd ~/go/src/github.com/m0rf30/pacur/docker
+cd ~/go/src/github.com/M0Rf30/pacur/docker
 sh clean.sh
 sh build.sh
 ```
@@ -194,7 +194,7 @@ the package with docker.
 $ mkdir httpserver
 $ cd httpserver
 $ nano PKGBUILD
-$ docker run --rm -t -v `pwd`:/pacur pacur/ubuntu-trusty
+$ docker run --rm -t -v `pwd`:/pacur m0rf30/ubuntu-trusty
 ```
 
 ```
@@ -253,7 +253,7 @@ available in the example directory. The `pull` command should be run before
 all builds to update the docker images used for builds.
 
 ```
-$ go get github.com/m0rf30/pacur
+$ go get github.com/M0Rf30/pacur
 $ cd example
 $ pacur pull
 $ pacur project init

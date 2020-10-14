@@ -2,8 +2,8 @@ package project
 
 import (
 	"github.com/dropbox/godropbox/container/set"
-	"github.com/m0rf30/pacur/constants"
-	"github.com/m0rf30/pacur/parse"
+	"github.com/M0Rf30/pacur/constants"
+	"github.com/M0Rf30/pacur/parse"
 	"strings"
 )
 
