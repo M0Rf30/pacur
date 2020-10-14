@@ -2,12 +2,12 @@ package packer
 
 import (
 	"github.com/dropbox/godropbox/errors"
-	"github.com/m0rf30/pacur/constants"
-	"github.com/m0rf30/pacur/debian"
-	"github.com/m0rf30/pacur/pack"
-	"github.com/m0rf30/pacur/pacman"
-	"github.com/m0rf30/pacur/redhat"
-	"github.com/m0rf30/pacur/suse"
+	"github.com/M0Rf30/pacur/constants"
+	"github.com/M0Rf30/pacur/debian"
+	"github.com/M0Rf30/pacur/pack"
+	"github.com/M0Rf30/pacur/pacman"
+	"github.com/M0Rf30/pacur/redhat"
+	"github.com/M0Rf30/pacur/suse"
 )
 
 type Packer interface {

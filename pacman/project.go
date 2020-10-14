@@ -1,8 +1,8 @@
 package pacman
 
 import (
-	"github.com/m0rf30/pacur/constants"
-	"github.com/m0rf30/pacur/utils"
+	"github.com/M0Rf30/pacur/constants"
+	"github.com/M0Rf30/pacur/utils"
 	"path/filepath"
 )
 

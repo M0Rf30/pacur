@@ -2,8 +2,8 @@ package pacman
 
 import (
 	"fmt"
-	"github.com/m0rf30/pacur/pack"
-	"github.com/m0rf30/pacur/utils"
+	"github.com/M0Rf30/pacur/pack"
+	"github.com/M0Rf30/pacur/utils"
 	"os"
 	"path/filepath"
 	"strconv"
